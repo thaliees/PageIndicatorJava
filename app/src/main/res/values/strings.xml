@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PageIndicator</string>
+    <string name="page_one">Developer</string>
+    <string name="page_two">Code</string>
+    <string name="page_one_description">Here you can find developers from around the world!</string>
+    <string name="page_two_description">You can share or search code: JAVA, JavaScript, Asp.Net, Swift</string>
+</resources>
