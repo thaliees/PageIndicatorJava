@@ -1,13 +1,15 @@
 package com.thaliees.pageindicator;
 
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ViewPager.PageTransformer {
     private LinearLayout pageIndicator;
     private TextView[] indicators;
 
@@ -20,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
         ViewPager container = findViewById(R.id.containerPage);
         PageView page = new PageView(this);
         container.setAdapter(page);
+        // Add Transformer for when change page
+        // true if the supplied PageTransformer requires page views to be drawn from last to first instead of first to last.
+        container.setPageTransformer(false, this);
         container.addOnPageChangeListener(pageIndicatorChange);
 
         pageIndicator = findViewById(R.id.pageIndicator);
@@ -66,6 +71,17 @@ public class MainActivity extends AppCompatActivity {
             // Change color only to the indicator selected
             indicators[position].setTextColor(getResources().getColor(R.color.colorAccent));
         }
+    }
+
+    @Override
+    public void transformPage(@NonNull View view, float position) {
+        // Here, all page are in the same screen
+        view.setTranslationX(view.getWidth() * - position);
+
+        // Transition: Called for each attached page whenever the scroll position is changed
+        if (position == 0F) view.setAlpha(1F);                          // View will be totally clear
+        else if (position <= -1F || position >= 1F) view.setAlpha(0F);  // View will not be seen
+        else view.setAlpha(1F - Math.abs(position));                    // View will be opaque
     }
 }
 
